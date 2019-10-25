@@ -1,17 +1,13 @@
 import scrapy
+from doubanspider.items import DoubanspiderItem
 
 class DoubanSpider(scrapy.Spider):
     name = 'douban'
-
-    def start_requests(self):
-        urls = [
-            'https://music.douban.com/subject/30204901/',
-        ]
-        for url in urls:
-            yield scrapy.Request(url=url, callback=self.parse)
+    start_urls = ['https://music.douban.com/subject/30204901/']
     
     def parse(self, response):
-        filename = 'feiyunzhixia.html'
-        with open(filename, 'wb') as f:
-            f.write(response.body)
-        self.log('Saved file %s'%filename)
+        music_name = response.xpath('//*[@id="wrapper"]/h1/span/text()').extract_first()
+        
+        item = DoubanspiderItem()
+        item['music_name'] = music_name
+        

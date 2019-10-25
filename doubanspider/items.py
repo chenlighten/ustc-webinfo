@@ -10,5 +10,10 @@ import scrapy
 
 class DoubanspiderItem(scrapy.Item):
     # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+    music_name = scrapy.Field()
+    music_url = scrapy.Field()
+    music_type = scrapy.Field()
+    music_poster = scrapy.Field()
+    
+    
+
