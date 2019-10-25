@@ -16,5 +16,5 @@ class DoubanSpider(scrapy.Spider):
         
         item = DoubanspiderItem()
         item['music_name'] = music_name
-        with open('feiyunzhixia.html', 'wb') as f:
-            f.write(response.body)
+        
+        yield item
