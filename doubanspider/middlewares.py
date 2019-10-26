@@ -9,6 +9,7 @@ from scrapy import signals
 from scrapy.downloadermiddlewares.useragent import UserAgentMiddleware
 import random
 from fake_useragent import UserAgent
+import time
 
 
 class DoubanspiderSpiderMiddleware(object):
@@ -117,3 +118,28 @@ class RandomUserAgentMiddlware(object):
 
     def process_request(self,request,spider):
         request.headers.setdefault("User-Agent",self.ua.random)
+
+
+class ProxyMiddleWare(object):
+    def process_request(self, request, spider):
+        proxy = self.get_random_proxy()
+        print('This is request ip:' + proxy)
+    
+    def process_response(self, request, response, spider):
+        if response.status != 200:
+            proxy = self.get_random_proxy()
+            print('This is response ip:' + proxy)
+            request.meta['proxy'] = proxy
+            return request
+        return response
+    
+    def get_random_proxy(self):
+        while True:
+            with open('proxies.txt', 'r') as f:
+                proxies = f.readlines()
+            if proxies:
+                break
+            else:
+                time.sleep(1)
+        proxy = random.choice(proxies).strip()
+        return proxy
