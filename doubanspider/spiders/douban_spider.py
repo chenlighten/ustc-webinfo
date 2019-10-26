@@ -2,6 +2,7 @@ import scrapy
 from doubanspider.items import DoubanspiderItem
 import requests
 from fake_useragent import UserAgent
+import time
 
 
 
@@ -10,7 +11,7 @@ class DoubanSpider(scrapy.Spider):
 
     def start_requests(self):
         urls = [
-            'https://music.douban.com/top250?start=0',
+            'https://music.douban.com/top250?start=%d'%(i*25) for i in range(10)
         ]
         for url in urls:
             yield scrapy.Request(url=url, callback=self.parse)
@@ -41,7 +42,7 @@ class DoubanSpider(scrapy.Spider):
         short_remarks_list = []
         i = 1
         while True:
-            if len(response.xpath('//*[@id="comments"]/ul/li[%i]'%i)) == 0:
+            if i > 5 or len(response.xpath('//*[@id="comments"]/ul/li[%i]'%i)) == 0:
                 break
             short_remarks_dict = {}
             short_remarks_dict['id'] = \
@@ -59,7 +60,7 @@ class DoubanSpider(scrapy.Spider):
         long_remarks_list = []
         i = 1
         while True:
-            if len(response.xpath('//div[@class="review-list  "]/div[%d]'%i)) == 0:
+            if i > 3 or len(response.xpath('//div[@class="review-list  "]/div[%d]'%i)) == 0:
                 break
             long_remarks_dict = {}
             long_remarks_dict['id'] = \
@@ -81,6 +82,7 @@ class DoubanSpider(scrapy.Spider):
 
     
     def get_long_remark_content(self, url):
+        time.sleep(2.0)
         response = requests.get(url, headers={'User-Agent': UserAgent().random})
         selector = scrapy.Selector(text=response.text)
         try:
@@ -110,5 +112,7 @@ class DoubanSpider(scrapy.Spider):
             music_url = \
                 response.xpath('//*[@id="content"]/div/div[1]/div/table[%i]//a[1]/@href'%i).extract_first()
             music_urls.append(music_url)
+        
+
         return music_urls
             
