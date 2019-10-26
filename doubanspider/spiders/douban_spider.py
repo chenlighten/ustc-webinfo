@@ -1,20 +1,29 @@
 import scrapy
 from doubanspider.items import DoubanspiderItem
+import requests
+from fake_useragent import UserAgent
+
+
 
 class DoubanSpider(scrapy.Spider):
     name = 'douban'
 
     def start_requests(self):
         urls = [
-            'https://douban.com/subject/30204901/',
+            'https://music.douban.com/top250?start=0',
         ]
         for url in urls:
             yield scrapy.Request(url=url, callback=self.parse)
     
 
     def parse(self, response):
-        item = self.process_music(response)
-        yield item
+        url = response.url
+        if url.find('subject') != -1:
+            yield self.process_music(response)
+        if url.find('top250') != -1:
+            more_urls = self.get_more_urls(response)
+            for more_url in more_urls:
+                yield scrapy.Request(url=more_url, callback=self.parse)
 
     
     def process_music(self, response):
@@ -72,14 +81,34 @@ class DoubanSpider(scrapy.Spider):
 
     
     def get_long_remark_content(self, url):
-        import requests
-        response = requests.get(url)
+        response = requests.get(url, headers={'User-Agent': UserAgent().random})
         selector = scrapy.Selector(text=response.text)
-        content_list = selector.xpath('//div[@class="review-content clearfix"]/p/text()').extract()
-        content = content_list[0]
-        for i in range(1, len(content_list)):
-            content += content_list[i]
-        with open('longremarkcontent.html', 'w') as f:
-            f.write(response.text)
-        return content
-        
+        try:
+            content_list = selector.xpath('//div[@class="review-content clearfix"]/p/text()').extract()
+            content = content_list[0]
+            for i in range(1, len(content_list)):
+                content += content_list[i]
+            with open('longremarkcontent.html', 'w') as f:
+                f.write(response.text)
+            return content
+        except:
+            try:
+                content_list = selector.xpath('//div[@class="review-content clearfix"]/text()').extract()
+                content = content_list[0]
+                for i in range(1, len(content_list)):
+                    content += content_list[i]
+                with open('longremarkcontent.html', 'w') as f:
+                    f.write(response.text)
+                return content
+            except:
+                return "No long remark"
+
+    
+    def get_more_urls(self, response):
+        music_urls = []
+        for i in range(1, 26):
+            music_url = \
+                response.xpath('//*[@id="content"]/div/div[1]/div/table[%i]//a[1]/@href'%i).extract_first()
+            music_urls.append(music_url)
+        return music_urls
+            
