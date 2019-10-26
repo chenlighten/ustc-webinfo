@@ -14,6 +14,11 @@ class DoubanspiderItem(scrapy.Item):
     music_url = scrapy.Field()
     music_type = scrapy.Field()
     music_poster = scrapy.Field()
+    short_remarks = scrapy.Field()
+    long_remarks = scrapy.Field()
     
-    
-
+class MusicRemarkItem(scrapy.Item):
+    user_id = scrapy.Field()
+    content = scrapy.Field()
+    star_number = scrapy.Field()
+    useful_number = scrapy.Field()
