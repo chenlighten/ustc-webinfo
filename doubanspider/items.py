@@ -22,3 +22,6 @@ class MusicRemarkItem(scrapy.Item):
     content = scrapy.Field()
     star_number = scrapy.Field()
     useful_number = scrapy.Field()
+
+class MusicUrlItem(scrapy.Item):
+    url = scrapy.Field()

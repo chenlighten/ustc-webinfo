@@ -22,3 +22,19 @@ class DoubanspiderPipeline(object):
     def process_item(self, item, spider):
         self.exporter.export_item(item)
         return item
+
+
+
+class AllMusicPipeline(object):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.file = open('allmuisc.txt', 'w')
+    
+
+    def close_spider(self, spider):
+        self.file.close()
+
+
+    def process_item(self, item, spider):
+        self.file.write(item['url'])
+        return item
