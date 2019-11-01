@@ -36,5 +36,5 @@ class AllMusicPipeline(object):
 
 
     def process_item(self, item, spider):
-        self.file.write(item['url'])
+        self.file.write(item['url'] + '\n')
         return item

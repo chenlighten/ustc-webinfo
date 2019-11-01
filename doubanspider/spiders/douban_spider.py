@@ -85,7 +85,7 @@ class DoubanSpider(scrapy.Spider):
 
     
     def get_long_remark_content(self, url):
-        time.sleep(0.5)
+        time.sleep(0.2)
         response = requests.get(url, headers={'User-Agent': UserAgent().random})
         selector = scrapy.Selector(text=response.text)
         try:
