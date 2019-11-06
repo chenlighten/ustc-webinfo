@@ -18,6 +18,16 @@ $ scrapy crawl douban
 $ scrapy crawl allmusic
 ```
 ### 分布式爬虫
+#### 结构
 将分支切换至`distributed`.
+
 主从分布式爬虫. 主爬虫获取需要爬取页面的URL, 从爬虫从URL中获取数据.
+
 首先安装数据库redis和pymongo. 前者用于在不同主机之间进行URL通信, 后者用于保存爬取的数据.
+
+#### 使用
+首先创建redis数据库作为URL队列. 在本机或服务器上输入:
+```shell
+$ redis-service --port <Your Port(default:6379)>
+```
+在`doubanspider/settings.py`中, 修改`REDIS_SERVER`为redis服务器的IP地址或本机地址(127.0.0.1), 修改`REDIS_PORT`为选定的端口号. 
