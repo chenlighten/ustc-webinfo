@@ -9,14 +9,8 @@ import time
 class DoubanSpider(scrapy.Spider):
     name = 'allmusic'
     custom_settings = {
-        'ITEM_PIPELINES': {'doubanspider.pipelines.AllMusicPipeline': 300}
+        'ITEM_PIPELINES': {'doubanspider.pipelines.RedisPipeline': 300}
     }
-
-    def start_requests(self):
-        # urls = ['https://music.douban.com/top250?start=%d'%(i*25) for i in range(10)]
-        urls = ['https://music.douban.com/subject/25927970/']
-        for url in urls:
-            yield scrapy.Request(url=url, callback=self.parse)
 
     
     def parse(self, response):

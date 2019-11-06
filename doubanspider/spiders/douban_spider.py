@@ -9,25 +9,15 @@ import time
 class DoubanSpider(scrapy.Spider):
     name = 'douban'
     custom_settings = {
-        'ITEM_PIPELINES': {'doubanspider.pipelines.DoubanspiderPipeline': 300}
+        'ITEM_PIPELINES': {'doubanspider.pipelines.MgdbPipeline': 300}
     }
-
-    def start_requests(self):
-        urls = [
-            'https://music.douban.com/top250?start=%d'%(i*25) for i in range(10)
-        ]
-        for url in urls:
-            yield scrapy.Request(url=url, callback=self.parse)
+    redis_key = 'myspider:start_urls' #从redis里面读url
     
 
     def parse(self, response):
         url = response.url
         if url.find('subject') != -1:
             yield self.process_music(response)
-        if url.find('top250') != -1:
-            more_urls = self.get_more_urls(response)
-            for more_url in more_urls:
-                yield scrapy.Request(url=more_url, callback=self.parse)
 
     
     def process_music(self, response):
