@@ -28,7 +28,7 @@ class DoubanspiderPipeline(object):
 class AllMusicPipeline(object):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.file = open('allmuisc.txt', 'w')
+        self.file = open('allmuiscurl.txt', 'w')
     
 
     def close_spider(self, spider):
