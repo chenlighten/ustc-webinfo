@@ -10,7 +10,7 @@ import pymysql
 pymysql.install_as_MySQLdb()
 import redis  #键值数据库
 import logging
-import scrapy_redis_mongodb.settings as settings
+import doubanspider.settings as settings
 from scrapy.utils.project import get_project_settings
 import pymongo
 from scrapy.exceptions import DropItem
