@@ -60,8 +60,8 @@ DOWNLOAD_DELAY = 3
 DOWNLOADER_MIDDLEWARES = {
     # 'scrapy.downloadermiddlewares.retry.RetryMiddleware': 90,
     # 'scrapy_proxies.RandomProxy': 100,
-    'doubanspider.middlewares.RandomUserAgentMiddlware': 333,
     # 'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': 110,
+    'doubanspider.middlewares.RandomUserAgentMiddlware': 333,
 }
 
 # Retry many times since proxies often fail
