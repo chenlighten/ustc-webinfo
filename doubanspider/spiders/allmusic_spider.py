@@ -11,6 +11,7 @@ class DoubanSpider(scrapy.Spider):
     custom_settings = {
         'ITEM_PIPELINES': {'doubanspider.pipelines.RedisPipeline': 300}
     }
+    start_urls = ['https://music.douban.com/subject/25927970/']
 
     
     def parse(self, response):
