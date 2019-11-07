@@ -10,11 +10,13 @@ Student: 许世晨, PB17030846.
 ```shell
 $ scrapy crawl douban
 ```
+数据将输出至`top250.json`中.
 ### 爬取所有音乐URL
 将分支切换至`master`.
 ```shell
 $ scrapy crawl allmusic
 ```
+数据将输出至`allmusic.txt`中.
 ### 分布式爬虫
 
 将分支切换至`distributed`.
@@ -46,7 +48,7 @@ $ scrapy crawl douban
 从爬虫从Redis数据库中获取音乐的URL, 并爬取音乐的详细信息. 这里默认将数据存在从爬虫所在主机的`music_info_distributed.json`文件中.
 
 #### 将数据存在Mongo数据库中
-为此你需要搭建一个Mongo数据库, 并在`doubanspider/settings.py`中修改MONGODB的URI, IP以及PORT.
+如果你需要将数据存储在数据库中而非本地磁盘中, 你需要首先搭建一个Mongo数据库, 并在`doubanspider/settings.py`中修改MONGODB的URI, IP以及PORT.
 然后修改`doubanspider/spiders/douban_spider.py`中的
 ```python
 custom_settings = {
@@ -60,3 +62,16 @@ custom_settings = {
 }
 ```
 然后安装相同的方式运行主从爬虫.
+
+### 代码说明
+
+- `doubanspider/spiders/douban_spider.py`: 从豆瓣音乐top250推荐页面获取唱片URL, 并从唱片介绍页面爬取结构化数据.
+页面解析通过xpath语法基于scrapy.Selector完成.
+- `doubanspider/spiders/allmusic.py`: 从一个音乐介绍页面开始, 通过音乐推荐获取新的URL, 并不断重复这一过程. 
+页面解析通过xpath语法基于scrapy.Selector完成.
+- `doubanspider/middlewares.py`: 其中的`RandomUserAgentMiddlware`用于添加User-agent头部, 避免爬虫被识别.
+- `doubanspider/items.py`: 定义了爬取数据的结构.
+- `doubanspider/pipelines.py`: 将爬取的数据存入磁盘或数据库.
+- `doubanspider/settings.py`: 定义了一些配置.
+- `proxies.py`: 从网上爬取一些IP代理, 避免爬虫被识别. 爬取的代理效果都不怎么地.
+整个项目的基本框架由scrapy生成.
