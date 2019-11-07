@@ -12,14 +12,18 @@ Student: 许世晨, PB17030846.
 - `scrapy`
 - `requests`
 - `fake_useragent`
+
 为了使用代理, 需要:
 - `scrapy_proxies`
+
 为了使用分布式爬虫, 需要:
 - `scrapy_redis`
 - `redis`
+
 为了将爬取结构写入数据库, 需要:
 - `pymysql`
 - `pymongo`
+
 此外, 分布式爬虫还需搭建redis数据库和mongo数据库.
 
 ### 爬取top250音乐信息
