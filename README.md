@@ -16,6 +16,7 @@ $ scrapy crawl douban
 ```shell
 $ scrapy crawl allmusic
 ```
+通过若干次`ctrl+c`停止.
 数据将输出至`allmusic.txt`中.
 ### 分布式爬虫
 
