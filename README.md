@@ -5,6 +5,23 @@ A spider crawling throuth Douban website to extract music information. Based on 
 
 Student: 许世晨, PB17030846.
 
+### requirements
+本爬虫需要以下python包.
+
+为了运行基本功能, 需要:
+- `scrapy`
+- `requests`
+- `fake_useragent`
+为了使用代理, 需要:
+- `scrapy_proxies`
+为了使用分布式爬虫, 需要:
+- `scrapy_redis`
+- `redis`
+为了将爬取结构写入数据库, 需要:
+- `pymysql`
+- `pymongo`
+此外, 分布式爬虫还需搭建redis数据库和mongo数据库.
+
 ### 爬取top250音乐信息
 将分支切换至`master`.
 ```shell
