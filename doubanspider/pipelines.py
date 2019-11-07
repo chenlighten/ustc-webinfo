@@ -17,8 +17,8 @@ from scrapy.exceptions import DropItem
 
 class DoubanspiderPipeline(object):
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.file = open('top250.json', 'wb')
+        # super().__init__(*args, **kwargs)
+        self.file = open('music_info_distributed.json', 'wb')
         self.exporter = JsonItemExporter(self.file, encoding='utf-8', ensure_ascii=False)
         self.exporter.start_exporting()
 
