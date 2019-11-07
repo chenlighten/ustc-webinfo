@@ -1,15 +1,16 @@
 import scrapy
 from doubanspider.items import DoubanspiderItem
+from scrapy_redis.spiders import RedisSpider
 import requests
 from fake_useragent import UserAgent
 import time
 
 
 
-class DoubanSpider(scrapy.Spider):
+class DoubanSpider(RedisSpider):
     name = 'douban'
     custom_settings = {
-        'ITEM_PIPELINES': {'doubanspider.pipelines.MgdbPipeline': 300}
+        'ITEM_PIPELINES': {'doubanspider.pipelines.DoubanspiderPipeline': 300}
     }
     redis_key = 'myspider:start_urls' #从redis里面读url
     

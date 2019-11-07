@@ -29,6 +29,7 @@ class DoubanspiderPipeline(object):
 
 
     def process_item(self, item, spider):
+        print('****************')
         self.exporter.export_item(item)
         return item
 
